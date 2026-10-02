@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "connect-livereload": "^0.6.1",
+    "live": "^0.1.19",
+    "livereload": "^0.10.3",
+    "nodemon": "^3.1.14"
+  }
+}

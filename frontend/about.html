@@ -1,0 +1,324 @@
+<script>
+// ===== POLLING BRUTAL =====
+(function() {
+    if (window.__brutalReload) return;
+    window.__brutalReload = true;
+    
+    const INTERVAL = 2000;
+    let lastData = '';
+    
+    async function check() {
+        try {
+            // Récupère les données brutes
+            const res = await fetch('/api/reviews', { cache: 'no-store' });
+            if (!res.ok) return;
+            
+            const data = await res.json();
+            const json = JSON.stringify(data);
+            
+            if (lastData && lastData !== json) {
+                console.log('🔄 Données changées, reload...');
+                location.reload();
+                return;
+            }
+            
+            lastData = json;
+        } catch(e) {}
+    }
+    
+    check();
+    setInterval(check, INTERVAL);
+    
+    console.log('🔥 Polling brutal actif');
+})();
+</script>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SayTo</title>
+    <link rel="icon" type="image/png" href="icon2.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/all.css">
+<base target="_blank">
+</head>
+<body class="about-page">
+    <header class="about-header">
+        <div class="logo" onclick="window.location.href='/'" style="cursor:pointer;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+            </svg>
+            <span>SayTo</span>
+        </div>
+        <div class="header-actions" style="cursor:pointer; font-size: 13px;">
+            <a href="mailto:kennyfotso@yahoo.com" style="text-decoration: none; color:rgb(75, 71, 101);">Contacter Nous</a>
+        </div>
+    </header>
+
+    <div class="about-container">
+        <div class="about-hero">
+            <h1>SayTo</h1>
+            <p>SayTo est votre compagnon de traduction intelligent, conçu pour rendre la communication entre les langues simple, rapide et accessible à tous. Grace a la <b>reconnaissance vocale</b> et a des <b>suggestions contextuelles</b>, traduire n'a jamais ete aussi naturel 🤩</p>
+        </div>
+
+        <div class="about-section">
+            <h2><span class="icon">✨</span> Fonctionnalites</h2>
+            <div class="about-features">
+                <div class="about-feature">
+                    <div class="icon"><i class="fa fa-volume-up"></i></div>
+                    <h3>Dictée Vocale</h3>
+                    <p>Parlez et laissez SayTo transcrire votre voix en texte automatiquement.</p>
+                </div>
+                <div class="about-feature">
+                    <div class="icon"><i class="fa fa-i-cursor"></i></div>
+                    <h3>Suggestions IA</h3>
+                    <p>Des prédictions intelligentes pour accélérer votre saisie.</p>
+                </div>
+                <div class="about-feature">
+                    <div class="icon"><i class="fa fa-history"></i></div>
+                    <h3>Historique</h3>
+                    <p>Retrouvez toutes vos traductions passées en un clic.</p>
+                </div>
+                <div class="about-feature">
+                    <div class="icon"><i class="fa fa-inbox"></i></div>
+                    <h3>Favoris</h3>
+                    <p>Vos textes les plus fréquents toujours a portée de main.</p>
+                </div>
+                <div class="about-feature">
+                    <div class="icon"><i class="fa fa-exchange"></i></div>
+                    <h3>Swap Rapide</h3>
+                    <p>Inversez les langues instantanement d'un seul clic.</p>
+                </div>
+                <div class="about-feature">
+                    <div class="icon"><i class="fa fa-sticky-note"></i></div>
+                    <h3>Statistiques</h3>
+                    <p>Suivez votre utilisation et vos habitudes de traduction.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="reviews-section" id="reviews-section">
+            <div class="reviews-header">
+                <h2><span class="icon">💬</span>Note</h2>
+                <div class="reviews-average" id="reviews-average" style="display:none;">
+                    <span class="avg-score" id="avg-score">0</span>
+                    <div class="avg-details">
+                        <div class="avg-stars" id="avg-stars"></div>
+                        <span class="avg-count" id="avg-count">0 avis</span>
+                    </div>
+                </div>
+            </div>
+            <div class="reviews-list" id="reviews-list">
+                <div class="no-reviews">
+                    <div class="no-reviews-icon">📝</div>
+                    <p>Aucun avis pour le moment. Soyez le premier a donner votre avis !</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin + '/api';
+
+        async function loadReviews() {
+            try {
+                const res = await fetch(`${API_URL}/reviews`);
+                const data = await res.json();
+
+                const reviewsList = document.getElementById('reviews-list');
+                const reviewsAverage = document.getElementById('reviews-average');
+                const avgScore = document.getElementById('avg-score');
+                const avgStars = document.getElementById('avg-stars');
+                const avgCount = document.getElementById('avg-count');
+
+                if (!data.reviews?.length) {
+                    reviewsList.innerHTML = `
+                        <div class="no-reviews">
+                            <div class="no-reviews-icon">📝</div>
+                            <p>Aucun avis pour le moment. Soyez le premier a donner votre avis !</p>
+                        </div>
+                    `;
+                    reviewsAverage.style.display = 'none';
+                    return;
+                }
+
+                // Calculer la moyenne
+                const totalScore = data.reviews.reduce((sum, r) => sum + r.score, 0);
+                const average = (totalScore / data.reviews.length).toFixed(1);
+
+                reviewsAverage.style.display = 'flex';
+                avgScore.textContent = average;
+                avgCount.textContent = `${data.reviews.length} avis`;
+
+                // Etoiles moyennes
+                const filledStars = Math.round((average / 20) * 5);
+                avgStars.innerHTML = Array(5).fill(0).map((_, i) => 
+                    `<span class="star ${i < filledStars ? 'filled' : ''}">★</span>`
+                ).join('');
+
+                // Trier par note decroissante
+                const sortedReviews = data.reviews.sort((a, b) => b.score - a.score);
+
+                reviewsList.innerHTML = sortedReviews.map(r => {
+                    const stars = Math.round((r.score / 20) * 5);
+                    const starsHtml = Array(5).fill(0).map((_, i) => 
+                        `<span class="star ${i < stars ? 'filled' : ''}">★</span>`
+                    ).join('');
+
+                    const date = new Date(r.date).toLocaleDateString('fr-FR', {
+                        day: 'numeric', month: 'long', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    });
+
+                    const initials = r.userId ? r.userId.substring(0, 2).toUpperCase() : '??';
+
+                    return `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-user">
+                                    <div class="review-avatar">${escapeHtml(initials)}</div>
+                                    <div class="review-user-info">
+                                        <span class="review-username">Utilisateur ${escapeHtml(r.userId?.substring(0, 8) || 'Anonyme')}</span>
+                                        <span class="review-date">${date}</span>
+                                    </div>
+                                </div>
+                                <div class="review-score">
+                                    <span class="review-score-value">${r.score}/20</span>
+                                    <div class="review-score-stars">${starsHtml}</div>
+                                </div>
+                            </div>
+                            <div class="review-comment">${escapeHtml(r.comment)}</div>
+                            ${r.suggestion ? `
+                                <div class="review-suggestion">
+                                    <span class="review-suggestion-icon">💡</span>
+                                    <div class="review-suggestion-text">
+                                        <span class="review-suggestion-label">Suggestion :</span>
+                                        ${escapeHtml(r.suggestion)}
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                console.error('Erreur chargement avis:', e);
+            }
+        }
+
+        // Vérifier les réponses admin non lues
+async function checkAdminReplies() {
+    const userId = localStorage.getItem('translatehci_userid');
+    if (!userId) return;
+
+    try {
+        const res = await fetch(`${API_URL}/user/notifications/${userId}`);
+        const data = await res.json();
+
+        if (data.hasUnread && data.replies.length > 0) {
+            showAdminReplyModal(data.replies[0]);
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function showAdminReplyModal(reply) {
+    // Créer modal bloquant
+    const modal = document.createElement('div');
+    modal.id = 'admin-reply-modal';
+    modal.style.cssText = `
+        position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+        display: flex; align-items: center; justify-content: center;
+        z-index: 9999;
+    `;
+    
+    modal.innerHTML = `
+        <div style="
+            background: #0d1117;
+            padding: 32px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid grey;
+        ">
+            <h2 style="margin-bottom: 12px; color: var(--text, #f1f5f9);">Réponse de l'admin</h2>
+            <p style="color: var(--text-secondary, #94a3b8); margin-bottom: 20px;">
+                L'administrateur a répondu à votre commentaire
+            </p>
+            <div style="
+                background: rgba(99, 102, 241, 0.1);
+                padding: 16px;
+                border-radius: 8px;
+                margin-bottom: 24px;
+                text-align: left;
+                color: var(--text, #f1f5f9);
+                border-left: 3px solid var(--primary, #6366f1);
+            ">
+                "${escapeHtml(reply.reply)}"
+            </div>
+            <button onclick="markReplyRead('${reply.id}')" style="
+                padding: 12px 32px;
+                background: #12171f;
+                color: grey;
+                border: none;
+                border-radius: 8px;
+                font-size: 16px;
+                cursor: pointer;
+            ">J'ai lu ✓</button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Bloquer le scroll
+    document.body.style.overflow = 'hidden';
+}
+
+async function markReplyRead(replyId) {
+    const userId = localStorage.getItem('translatehci_userid');
+    
+    try {
+        await fetch(`${API_URL}/user/notifications/read`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, replyId })
+        });
+        
+        const modal = document.getElementById('admin-reply-modal');
+        if (modal) {
+            modal.remove();
+            document.body.style.overflow = '';
+        }
+        
+        // Vérifier s'il y a d'autres réponses
+        checkAdminReplies();
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+// Appeler au chargement
+document.addEventListener('DOMContentLoaded', () => {
+    loadReviews();
+    checkAdminReplies();
+});
+
+        function escapeHtml(s) {
+            const d = document.createElement('div');
+            d.textContent = s;
+            return d.innerHTML;
+        }
+
+        loadReviews();
+    </script>
+</body>
+</html>
+<script>
+  document.write('<script src="http://' + (location.host).split(':')[0] +
+  ':35729/livereload.js"></' + 'script>')
+</script>

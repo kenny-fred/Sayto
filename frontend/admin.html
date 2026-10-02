@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SayTo</title>
+    <link rel="icon" type="image/png" href="icon2.png">
+    <link rel="stylesheet" href="assets/css/all.css">
+    <script src="js/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --surface-hover: #1f242c;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-secondary: #8b949e;
+            --primary: #58a6ff;
+            --primary-hover: #79b8ff;
+            --success: #3fb950;
+            --warning: #d29922;
+            --danger: #f85149;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        /* ===== PAGE 404 FAUSSE ===== */
+        .fake-404 {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            flex-direction: column;
+            text-align: center;
+            padding: 24px;
+        }
+
+        .fake-404.active {
+            display: flex;
+        }
+
+        .fake-404 h1 {
+            font-size: 72px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            letter-spacing: -2px;
+        }
+
+        .fake-404 p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .fake-404 a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .fake-404 a:hover {
+            text-decoration: underline;
+        }
+
+        /* Login */
+        .login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .login-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 32px;
+            border-radius: 6px;
+            width: 100%;
+            max-width: 340px;
+        }
+
+        .login-box h1 {
+            text-align: center;
+            margin-bottom: 4px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .login-box p {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--surface-hover);
+            border-color: var(--text-secondary);
+        }
+
+        .btn-primary {
+            background: #238636;
+            border-color: #238636;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #2ea043;
+            border-color: #2ea043;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dash-header h1 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .dash-header span {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+        }
+
+        .chart-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .chart-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            position: relative;
+        }
+
+        #langChart {
+            max-width: 180px;
+            max-height: 180px;
+        }
+
+        .top-words {
+            list-style: none;
+        }
+
+        .top-words li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .top-words li:last-child {
+            border-bottom: none;
+        }
+
+        .word-rank {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .word-info {
+            flex: 1;
+            color: var(--text);
+        }
+
+        .word-count {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .reviews-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+        }
+
+        .reviews-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .review-item {
+            padding: 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .review-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .review-user {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .review-score {
+            font-size: 12px;
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        .review-comment {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .review-suggestion {
+            font-size: 12px;
+            color: var(--warning);
+            margin-bottom: 10px;
+        }
+
+        .reply-btn {
+            padding: 4px 12px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reply-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .admin-reply {
+            margin-top: 10px;
+            padding: 10px;
+            background: var(--surface-hover);
+            border-radius: 6px;
+            border-left: 3px solid var(--success);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .admin-reply strong {
+            color: var(--success);
+        }
+
+        .logout-wrap {
+            text-align: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--danger);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            border-color: var(--danger);
+            background: rgba(248, 81, 73, 0.1);
+        }
+
+        /* ===== BOUTON REFRESH ===== */
+        .refresh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--primary);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .refresh-btn:hover {
+            border-color: var(--primary);
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        .refresh-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .refresh-btn .spin {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(13, 17, 23, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: 6px;
+            width: 90%;
+            max-width: 420px;
+        }
+
+        .modal h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .modal p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .modal textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 13px;
+            resize: vertical;
+            margin-bottom: 16px;
+        }
+
+        .modal textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .modal-actions button {
+            padding: 6px 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-size: 13px;
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .modal-actions button:hover {
+            background: var(--surface-hover);
+        }
+
+        .modal-actions .btn-primary {
+            background: #238636;
+            border-color: #238636;
+            color: #fff;
+        }
+
+        .modal-actions .btn-primary:hover {
+            background: #2ea043;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 12px 20px;
+            border-radius: 6px;
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success { background: #1a4c22; border-color: #3fb950; }
+        .toast.error { background: #4c1a1a; border-color: #f85149; }
+
+        @media (max-width: 768px) {
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .charts-row { grid-template-columns: 1fr; }
+            .dashboard { padding: 16px; }
+            .fake-404 h1 { font-size: 48px; }
+            .logout-wrap { flex-direction: column; }
+            .logout-btn, .refresh-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== FAUSSE PAGE 404 (sécurité) ===== -->
+    <div class="fake-404" id="fake-404">
+        <h1>404</h1>
+        <p>Page introuvable</p>
+        <a href="/">Retour</a>
+    </div>
+
+    <!-- Login -->
+    <div class="login-screen" id="login-screen">
+        <div class="login-box">
+            <h1>Administrateur</h1>
+            <p id="login-subtitle">Connexion requise</p>
+            
+            <div class="form-group" id="password-setup-group" style="display:none;">
+                <label>Créer un mot de passe (min 6 caractères)</label>
+                <input type="password" id="admin-password" placeholder="••••••">
+            </div>
+            
+            <div class="form-group" id="password-login-group">
+                <label>Mot de passe</label>
+                <input type="password" id="login-password" placeholder="••••••">
+            </div>
+            
+            <button class="btn btn-primary" id="login-btn" onclick="handleAuth()">Continuer</button>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="dash-header">
+            <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
+            <span id="admin-user" style="background: rgba(17, 27, 69, 0.703); padding: 10px; border: 1px solid transparent; border-radius: 5px;"></span>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <h3>Traductions</h3>
+                <div class="stat-value" id="stat-total">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Utilisateurs</h3>
+                <div class="stat-value" id="stat-users">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Note moyenne</h3>
+                <div class="stat-value" id="stat-rating">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Avis</h3>
+                <div class="stat-value" id="stat-reviews">0</div>
+            </div>
+        </div>
+
+        <div class="charts-row">
+            <div class="chart-card">
+                <h3><i class="fa fa-tags"></i> STATISTIQUE</h3>
+                <div class="chart-wrap">
+                    <canvas id="langChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3><i class="fa fa-refresh"></i> MOTS FREQUENTS</h3>
+                <ul class="top-words" id="top-words"></ul>
+            </div>
+        </div>
+
+        <div class="reviews-section">
+            <h3><i class="fa fa-envelope"></i> NOTIFICATIONS</h3>
+            <div id="reviews-container"></div>
+        </div>
+
+        <div class="logout-wrap">
+            <button class="refresh-btn" id="refresh-btn" onclick="refreshData()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="refresh-icon">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                </svg>
+                Mettre à jour les données
+            </button>
+            <button class="logout-btn" onclick="logout()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Déconnexion
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="reply-modal">
+        <div class="modal">
+            <h3>Répondre</h3>
+            <p id="reply-user"></p>
+            <textarea id="reply-text" placeholder="Votre réponse..."></textarea>
+            <div class="modal-actions">
+                <button onclick="closeReplyModal()">Annuler</button>
+                <button class="btn-primary" onclick="submitReply()">Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const API_URL = window.location.origin + '/api';
+        let adminToken = null;
+        let currentUserId = null;
+        let selectedReviewUser = null;
+        let langChartInstance = null;
+
+        // Fonction pour relire les valeurs à chaque fois (pas juste au chargement)
+        function refreshStorage() {
+            adminToken = localStorage.getItem('sayto_admin_token');
+            currentUserId = localStorage.getItem('translatehci_userid') || localStorage.getItem('sayto_admin_userid');
+            
+            console.log('=== Storage Debug ===');
+            console.log('sayto_admin_token:', localStorage.getItem('sayto_admin_token'));
+            console.log('translatehci_userid:', localStorage.getItem('translatehci_userid'));
+            console.log('sayto_admin_userid:', localStorage.getItem('sayto_admin_userid'));
+            console.log('currentUserId lu:', currentUserId);
+        }
+
+        // Appeler au démarrage
+        refreshStorage();
+
+        // ===== SÉCURITÉ : Vérifier si l'utilisateur est l'admin =====
+        async function checkAdminAccess() {
+            try {
+                // Récupérer l'adminId stocké lors de la connexion admin
+                const adminUserId = localStorage.getItem('sayto_admin_userid');
+                
+                // Si pas d'admin enregistré, on vérifie via l'API
+                if (!adminUserId) {
+                    const res = await fetch(`${API_URL}/admin/check`, {
+                        headers: { 'x-admin-token': adminToken || '' }
+                    });
+                    
+                    if (!res.ok) {
+                        showFake404();
+                        return false;
+                    }
+                    
+                    const data = await res.json();
+                    if (!data.isAdmin || data.userId !== currentUserId) {
+                        showFake404();
+                        return false;
+                    }
+                    
+                    // Stocker l'adminId pour les prochaines fois
+                    localStorage.setItem('sayto_admin_userid', currentUserId);
+                    return true;
+                }
+                
+                // Vérifier que le userId actuel correspond à l'admin enregistré
+                if (adminUserId !== currentUserId) {
+                    showFake404();
+                    return false;
+                }
+                
+                return true;
+            } catch (e) {
+                showFake404();
+                return false;
+            }
+        }
+
+        function showFake404() {
+            // Cacher tout le contenu admin
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('reply-modal').style.display = 'none';
+            
+            // Afficher la fausse 404
+            document.getElementById('fake-404').classList.add('active');
+            
+            // Changer le titre
+            document.title = '404 - Page introuvable';
+        }
+
+        async function checkFirstUser() {
+            try {
+                const res = await fetch(`${API_URL}/admin/check-first-user`);
+                const data = await res.json();
+                
+                if (data.isFirstUser) {
+                    document.getElementById('login-subtitle').textContent = 'Première connexion';
+                    document.getElementById('password-setup-group').style.display = 'block';
+                    document.getElementById('password-login-group').style.display = 'none';
+                    document.getElementById('login-btn').textContent = 'Créer le compte';
+                } else {
+                    // Afficher le formulaire de connexion normal
+                    document.getElementById('password-setup-group').style.display = 'none';
+                    document.getElementById('password-login-group').style.display = 'block';
+                    document.getElementById('login-btn').textContent = 'Se connecter';
+                }
+            } catch (e) {
+                console.error(e);
+                // En cas d'erreur, afficher quand même le login
+                document.getElementById('password-setup-group').style.display = 'none';
+                document.getElementById('password-login-group').style.display = 'block';
+                document.getElementById('login-btn').textContent = 'Se connecter';
+            }
+        }
+
+        async function handleAuth() {
+            const isFirst = document.getElementById('password-setup-group').style.display !== 'none';
+            const password = isFirst ? 
+                document.getElementById('admin-password').value : 
+                document.getElementById('login-password').value;
+
+            if (!password || password.length < 6) {
+                toast('Min 6 caractères', 'error');
+                return;
+            }
+
+            try {
+                const endpoint = isFirst ? '/admin/register' : '/admin/login';
+                const res = await fetch(`${API_URL}${endpoint}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUserId, password })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    localStorage.setItem('sayto_admin_token', data.token);
+                    localStorage.setItem('sayto_admin_userid', currentUserId); // Stocker l'adminId
+                    // Ajoute aussi cette ligne pour compatibilité :
+                    localStorage.setItem('translatehci_userid', currentUserId);
+                    adminToken = data.token;
+                    showDashboard();
+                } else {
+                    toast(data.error, 'error');
+                }
+            } catch (e) {
+                toast('Erreur de connexion', 'error');
+            }
+        }
+
+        async function showDashboard() {
+            // Vérifier l'accès admin avant d'afficher
+            const hasAccess = await checkAdminAccess();
+            if (!hasAccess) return;
+            
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('admin-user').textContent = `Admin: ${currentUserId?.substring(0, 8)}...`;
+            
+            await loadDashboard();
+            await loadReviews();
+        }
+
+        async function loadDashboard() {
+            try {
+                const res = await fetch(`${API_URL}/admin/dashboard`, {
+                    headers: { 'x-admin-token': adminToken }
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    const d = data.dashboard;
+                    document.getElementById('stat-total').textContent = d.totalTranslations;
+                    document.getElementById('stat-users').textContent = d.totalUsers;
+                    document.getElementById('stat-rating').textContent = d.averageRating;
+                    document.getElementById('stat-reviews').textContent = d.totalReviews;
+
+                    drawPieChart(d.enCount, d.frCount);
+
+                    const wordsList = document.getElementById('top-words');
+                    wordsList.innerHTML = d.topWords.map((w, i) => `
+                        <li>
+                            <span class="word-rank">${i + 1}</span>
+                            <span class="word-info">${escapeHtml(w.word)}</span>
+                            <span class="word-count">${w.count}×</span>
+                        </li>
+                    `).join('');
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function drawPieChart(en, fr) {
+            const ctx = document.getElementById('langChart').getContext('2d');
+            
+            if (langChartInstance) {
+                langChartInstance.destroy();
+            }
+
+            const total = en + fr;
+            
+            if (total === 0) {
+                langChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Aucune donnée'],
+                        datasets: [{
+                            data: [1],
+                            backgroundColor: ['#30363d'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        cutout: '65%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false }
+                        }
+                    }
+                });
+                return;
+            }
+
+            const enPct = Math.round((en / total) * 100);
+            const frPct = Math.round((fr / total) * 100);
+
+            langChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['EN', 'FR'],
+                    datasets: [{
+                        data: [en, fr],
+                        backgroundColor: ['#58a6ff', '#3fb950'],
+                        borderColor: '#161b22',
+                        borderWidth: 2,
+                        hoverBackgroundColor: ['#79b8ff', '#56d364']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#8b949e',
+                                font: { size: 12 },
+                                padding: 16,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#161b22',
+                            titleColor: '#c9d1d9',
+                            bodyColor: '#c9d1d9',
+                            borderColor: '#30363d',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const pct = Math.round((value / total) * 100);
+                                    return `${label}: ${value} traductions (${pct}%)`;
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        animateRotate: true,
+                        duration: 800
+                    }
+                },
+                plugins: [{
+                    id: 'centerText',
+                    afterDraw: function(chart) {
+                        const { ctx, chartArea } = chart;
+                        const centerX = (chartArea.left + chartArea.right) / 2;
+                        const centerY = (chartArea.top + chartArea.bottom) / 2;
+                        
+                        ctx.save();
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        
+                        ctx.font = 'bold 13px sans-serif';
+                        ctx.fillStyle = '#58a6ff';
+                        ctx.fillText(`EN ${enPct}%`, centerX, centerY - 8);
+                        
+                        ctx.font = 'bold 13px sans-serif';
+                        ctx.fillStyle = '#3fb950';
+                        ctx.fillText(`FR ${frPct}%`, centerX, centerY + 12);
+                        
+                        ctx.restore();
+                    }
+                }]
+            });
+        }
+
+        async function loadReviews() {
+            try {
+                const res = await fetch(`${API_URL}/reviews`);
+                const data = await res.json();
+                const container = document.getElementById('reviews-container');
+
+                if (!data.reviews?.length) {
+                    container.innerHTML = '<p style="color: var(--text-secondary); font-size: 13px;">Aucun avis</p>';
+                    return;
+                }
+
+                container.innerHTML = data.reviews.map((r, index) => {
+                    const stars = '★'.repeat(Math.round(r.score / 4)) + '☆'.repeat(5 - Math.round(r.score / 4));
+                    return `
+                        <div class="review-item" data-review-index="${index}" data-user-id="${escapeHtml(r.userId)}">
+                            <div class="review-header">
+                                <span class="review-user">${escapeHtml(r.userId?.substring(0, 8))}...</span>
+                                <span class="review-score">${r.score}/20 ${stars}</span>
+                            </div>
+                            <div class="review-comment">${escapeHtml(r.comment)}</div>
+                            ${r.suggestion ? `<div class="review-suggestion">💡 ${escapeHtml(r.suggestion)}</div>` : ''}
+                            ${r.adminReply ? `
+                                <div class="admin-reply">
+                                    <strong>Réponse : </strong> ${escapeHtml(r.adminReply)}
+                                </div>
+                            ` : `
+                                <button class="reply-btn" data-action="reply" data-index="${index}">
+                                    Répondre
+                                </button>
+                            `}
+                        </div>
+                    `;
+                }).join('');
+
+                container.querySelectorAll('[data-action="reply"]').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        const reviewItem = this.closest('.review-item');
+                        const userId = reviewItem.dataset.userId;
+                        const comment = reviewItem.querySelector('.review-comment').textContent;
+                        openReplyModal(userId, comment);
+                    });
+                });
+
+            } catch (e) {
+                console.error('Erreur loadReviews:', e);
+            }
+        }
+
+        function openReplyModal(userId, comment) {
+            selectedReviewUser = userId;
+            document.getElementById('reply-user').textContent = `À: ${userId.substring(0, 8)}... — "${comment}"`;
+            document.getElementById('reply-modal').classList.add('active');
+        }
+
+        function closeReplyModal() {
+            document.getElementById('reply-modal').classList.remove('active');
+            selectedReviewUser = null;
+            document.getElementById('reply-text').value = '';
+        }
+
+        async function submitReply() {
+            const reply = document.getElementById('reply-text').value.trim();
+            if (!reply || !selectedReviewUser) {
+                toast('Veuillez saisir une réponse', 'error');
+                return;
+            }
+
+            const submitBtn = document.querySelector('.modal-actions .btn-primary');
+            submitBtn.disabled = true;
+
+            try {
+                const res = await fetch(`${API_URL}/admin/reply`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-admin-token': adminToken 
+                    },
+                    body: JSON.stringify({ userId: selectedReviewUser, reply })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    toast('Réponse envoyée', 'success');
+                    closeReplyModal();
+                    await loadReviews();
+                } else {
+                    toast(data.error || 'Erreur', 'error');
+                }
+            } catch (e) {
+                toast('Erreur de connexion', 'error');
+            } finally {
+                submitBtn.disabled = false;
+            }
+        }
+
+        // ===== BOUTON REFRESH =====
+        async function refreshData() {
+            const btn = document.getElementById('refresh-btn');
+            const icon = document.getElementById('refresh-icon');
+            
+            // Désactiver le bouton et lancer l'animation
+            btn.disabled = true;
+            icon.classList.add('spin');
+            
+            try {
+                // Recharger les données en parallèle
+                await Promise.all([
+                    loadDashboard(),
+                    loadReviews()
+                ]);
+                
+                toast('Données mises à jour', 'success');
+            } catch (e) {
+                console.error('Erreur refresh:', e);
+                toast('Erreur lors de la mise à jour', 'error');
+            } finally {
+                // Réactiver le bouton et arrêter l'animation
+                btn.disabled = false;
+                icon.classList.remove('spin');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('sayto_admin_token');
+            localStorage.removeItem('sayto_admin_userid'); // Supprimer l'adminId
+            location.reload();
+        }
+
+        function toast(msg, type) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = `toast ${type} show`;
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        function escapeHtml(s) {
+            if (!s) return '';
+            const d = document.createElement('div');
+            d.textContent = s;
+            return d.innerHTML;
+        }
+
+        document.getElementById('reply-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeReplyModal();
+        });
+
+        // ===== INIT AVEC SÉCURITÉ =====
+        async function init() {
+            refreshStorage(); // Relire au cas où
+            
+            if (!currentUserId) {
+                console.error('PAS DE USERID - localStorage vide ?');
+                showFake404();
+                return;
+            }
+            
+            if (adminToken) {
+                try {
+                    const res = await fetch(`${API_URL}/admin/verify`, {
+                        headers: { 'x-admin-token': adminToken }
+                    });
+                    
+                    if (res.ok) {
+                        showDashboard();
+                        return;
+                    } else {
+                        throw new Error('Token invalide');
+                    }
+                } catch (e) {
+                    localStorage.removeItem('sayto_admin_token');
+                    localStorage.removeItem('sayto_admin_userid');
+                    refreshStorage();
+                }
+            }
+            
+            await checkFirstUser();
+        }
+
+        init();
+    </script>
+</body>
+</html>

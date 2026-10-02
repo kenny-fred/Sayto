@@ -1,0 +1,54 @@
+{
+  "reviews": [
+    {
+      "userId": "511fe3a5-q5q3h66p",
+      "score": 14,
+      "comment": "L'application est assez intuitif je trouve, et pour le reste tous marche : pour moi c'est l'essentiel 😅",
+      "suggestion": "On peut par exemple donner la possibilité aux utilisateurs de personnaliser l'interface : soit avec un dark/light mode ou autre !",
+      "date": "2026-06-24T04:59:41.094Z",
+      "adminReply": "C'est noté, merci !",
+      "replyDate": "2026-06-24T05:00:32.776Z",
+      "isRead": false
+    },
+    {
+      "userId": "420eceba-xok8czbl",
+      "score": 9,
+      "comment": "Le concept de traduction avec historique et stats personnelles est pertinent. L'interface de notation est claire et demande un commentaire obligatoire (bonne pratique pour éviter les notes sans explication)",
+      "suggestion": "Passer à une vraie base de données. JSON + fs c'est bien pour un prototype, pas pour la prod. SQLite (léger, local) ou MongoDB/PostgreSQL selon l'échelle.",
+      "date": "2026-06-24T07:47:37.261Z",
+      "adminReply": "Je vois, nous nous chargerons de cela. Merci 👌",
+      "replyDate": "2026-06-24T12:59:14.086Z",
+      "isRead": false
+    },
+    {
+      "userId": "2bcba605-m29tgmhe",
+      "score": 13,
+      "comment": "le potentiel est là, mais la stabilité technique doit être la priorité #1 avant d'ajouter des features.",
+      "suggestion": "Une base JSON synchronisée\t(fs.writeFileSync à chaque traduction) crée un risque de corruption + pas scalable. L'app n'as pas encore de gestion d'erreurs sur les I/O (Si le fichier est corrompu ou verrouillé, l'app crash)",
+      "date": "2026-06-24T16:18:59.001Z",
+      "adminReply": "😥 Désolé, nous allons prendre en considération cela, merci une fois de plus !",
+      "replyDate": "2026-06-24T16:21:43.160Z",
+      "isRead": false
+    },
+    {
+      "userId": "14987b5d-pnbjt7v1",
+      "score": 13,
+      "comment": "L'app est sympa et très simple au final. Je n'ai pas eu de difficultés à me retrouver",
+      "suggestion": null,
+      "date": "2026-06-25T13:17:44.108Z",
+      "adminReply": "Merci pour votre soutien 😁",
+      "replyDate": "2026-06-25T13:19:30.264Z",
+      "isRead": false
+    },
+    {
+      "userId": "3294de2a-m3zfax6e",
+      "score": 15,
+      "comment": "Pas mal, simple et efficace !",
+      "suggestion": null,
+      "date": "2026-07-09T06:37:46.307Z",
+      "adminReply": "Ok on verra cela",
+      "replyDate": "2026-07-25T08:20:13.058Z",
+      "isRead": false
+    }
+  ]
+}

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SayTo</title>
+    <link rel="icon" type="image/png" href="icon2.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/all.css">
+    <base target="_blank">
+</head>
+<body>
+    <div class="app">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo" id="logo-btn" style="cursor:pointer;" title="Par kenny fotso">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+                <span title="Par kenny fotso">SayTo</span>
+            </div>
+            
+            <div class="header-actions" title="Aide">
+                <button id="help-btn" class="icon-btn" title="Aide">
+                    <b>?</b>
+                </button>
+                <div class="user-id" id="user-id">Chargement...</div>
+            </div>
+        </header>
+
+        <!-- MAIN -->
+        <main class="main">
+            <!-- STATS BAR -->
+            <div class="stats-bar">
+                <div class="stat">
+                    <span class="stat-value" id="stat-total">0</span>
+                    <span class="stat-label">Traductions</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="stat-favs">0</span>
+                    <span class="stat-label">Favoris</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="stat-langs">2</span>
+                    <span class="stat-label">Langues</span>
+                </div>
+            </div>
+
+            <!-- TRANSLATOR -->
+            <div class="translator">
+                <div class="lang-row">
+                    <select id="source-lang" class="lang-select">
+                        <option value="fr" selected>FR</option>
+                        <option value="en">EN</option>
+                    </select>
+
+                    <button id="voice-btn" class="icon-btn voice-btn" title="Dictee vocale">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/>
+                            <path d="M19 10v2a7 7 0 01-14 0v-2"/>
+                            <line x1="12" y1="19" x2="12" y2="23"/>
+                            <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                    </button>
+
+                    <button id="swap-btn" class="icon-btn" title="Inverser">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                        </svg>
+                    </button>
+
+                    <select id="target-lang" class="lang-select">
+                        <option value="en" selected>EN</option>
+                        <option value="fr">FR</option>
+                    </select>
+                </div>
+
+                <div class="text-areas">
+                    <div class="input-box">
+                        <textarea id="input-text" placeholder="Entrez votre texte ou cliquez sur le micro..." maxlength="5000"></textarea>
+                        <div class="input-footer">
+                            <span id="char-count">0 / 5000</span>
+                            <div class="input-actions">
+                                <button id="clear-btn" class="text-btn">⨉ &nbsp;EFFACER</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="translate-btn" class="translate-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+
+                    <div class="output-box">
+                        <textarea id="output-text" readonly placeholder="Traduction..."></textarea>
+                        <div class="output-footer">
+                            <button id="copy-btn" class="text-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2"/>
+                                    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                                </svg>
+                                COPIER
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABS -->
+            <div class="tabs">
+                <div class="tab-header">
+                    <button class="tab-btn active" data-tab="history">HISTORIQUE</button>
+                    <button class="tab-btn" data-tab="favorites">FAVORIS</button>
+                    <button class="tab-btn" data-tab="stats">STATS</button>
+                </div>
+
+                <div class="tab-content active" id="history-tab">
+                    <div class="empty-state" id="history-empty">
+                        <p><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg><br>
+                            Aucune traduction</p>
+                    </div>
+                    <div class="list" id="history-list"></div>
+                </div>
+
+                <div class="tab-content" id="favorites-tab">
+                    <div class="info-banner">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 16v-4M12 8h.01"/>
+                        </svg>
+                        Les favoris sont générés automatiquement selon la fréquence d'apparition des textes traduits
+                    </div>
+                    <div class="empty-state" id="favorites-empty">
+                        <p><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                        </svg><br>
+                            Aucun favori encore</p>
+                    </div>
+                    <div class="list" id="favorites-list"></div>
+                </div>
+
+                <div class="tab-content" id="stats-tab">
+                    <div class="stats-grid" id="stats-content">
+                        <div class="stat-card">
+                            <h3>Total traductions</h3>
+                            <p class="big" id="st-total">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Langues utilisees</h3>
+                            <p class="big" id="st-langs">0</p>
+                        </div>
+                        <div class="stat-card wide">
+                            <h3>Top textes frequents</h3>
+                            <div id="st-top"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- LISTENING INDICATOR -->
+    <div id="listening-indicator" class="listening-indicator">
+        <span class="dot"></span>
+        <span>Ecoute en cours</span>
+    </div>
+
+    <!-- ONBOARDING CONTAINER -->
+    <div id="onboarding-container"></div>
+
+    <!-- DUPLICATE CHECK MODAL -->
+    <div id="duplicate-modal" class="duplicate-modal">
+        <div class="duplicate-content">
+            <p>🤔 Ce texte a deja ete traduit avant !</p>
+            <div class="duplicate-translation" id="duplicate-translation"></div>
+            <div class="duplicate-actions">
+                <button class="btn btn-secondary" id="duplicate-use-btn">Je m'en souviendrais</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SAYTO NAV MODAL (menu depuis le logo) -->
+    <div id="sayto-nav-modal" class="sayto-nav-modal">
+        <div class="sayto-nav-content">
+            <div class="sayto-nav-header">
+                <div class="sayto-nav-logo">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                    <span>SayTo</span>
+                </div>
+                <button class="sayto-nav-close" id="sayto-nav-close">&times;</button>
+            </div>
+            <nav class="sayto-nav-links">
+                <a onclick="window.location=window.location.href+'about'" class="sayto-nav-link">
+                    <span class="sayto-nav-icon"><i class="fa fa-info"></i></span>
+                    <span>A propos de nous</span>
+                </a>
+                <button class="sayto-nav-link" id="nav-suggest-btn">
+                    <span class="sayto-nav-icon"><i class="fa fa-share"></i></span>
+                    <span>Apporter vos suggestions</span>
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- RATING MODAL (Noter l'app) -->
+    <div id="rating-modal" class="rating-modal">
+        <div class="rating-content">
+            <div class="rating-header">
+                <h2>Noter SayTo</h2>
+                <button class="rating-close" id="rating-close">&times;</button>
+            </div>
+            <div class="rating-stars" id="rating-stars-display">
+                        <!-- Etoiles generees en JS -->
+            </div>
+            <div class="rating-body">
+                <p class="rating-intro">Votre avis compte beaucoup pour nous !</p>
+
+                <div class="rating-score-section">
+                    <div class="rating-slider-container">
+                        <input type="range" id="rating-slider" min="0" max="20" value="10" step="1">
+                        <div class="rating-value-display">
+                            <span id="rating-value">10</span><span class="rating-max">/20</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rating-comment-section">
+                    <label class="rating-label" for="rating-comment">Votre commentaire <span class="required">*</span></label>
+                    <textarea id="rating-comment" placeholder="Partagez votre experience avec SayTo..." rows="4"></textarea>
+                    <span class="rating-hint">Le commentaire est obligatoire</span>
+                </div>
+
+                <div class="rating-suggestion-section">
+                    <label class="rating-label" for="rating-suggestion">Votre suggestion</label>
+                    <textarea id="rating-suggestion" placeholder="Une idee d'amelioration ?" rows="3"></textarea>
+                    <span class="rating-hint">Laissez vide si aucune</span>
+                </div>
+            </div>
+            <div class="rating-footer">
+                <button class="btn btn-secondary" id="rating-cancel">Annuler</button>
+                <button class="btn btn-primary" id="rating-submit">Envoyer mon avis</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/voiceService.js"></script>
+    <script src="js/app.js"></script>

@@ -1,0 +1,25 @@
+/* Navigation avec effet glassmorphisme - Appliqué à la barre entière */
+        .glass-nav-container {
+            background: transparent !important; /* On enlève le fond noir */
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            margin-bottom: 5%;
+        }
+        
+        .glass-nav {
+            background: rgba(5, 4, 4, 0.6) !important;
+            backdrop-filter: blur(4px) saturate(180%);
+            -webkit-backdrop-filter: blur(4px) saturate(180%);
+            border-radius: 4px; /* Optionnel: coins arrondis */
+            padding: 0 10px;
+        }
+        
+        /* Pour que le contenu derrière soit visible */
+        .w3-black {
+            background-color: #000 !important;
+        }
+
+            body { background: black; }
+    #page { display: none; }

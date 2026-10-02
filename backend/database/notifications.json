@@ -1,0 +1,86 @@
+{
+  "notifications": [
+    {
+      "id": "a46b4465-a415-4aa9-a83c-5c950f6071c1",
+      "type": "new_review",
+      "userId": "511fe3a5-q5q3h66p",
+      "message": "Nouvel avis de 511fe3a5...",
+      "date": "2026-06-24T04:59:41.101Z",
+      "isRead": true,
+      "reviewId": "2026-06-24T04:59:41.094Z"
+    },
+    {
+      "id": "cdb8a9dc-973c-4885-8080-bbb30dad1354",
+      "type": "new_review",
+      "userId": "420eceba-xok8czbl",
+      "message": "Nouvel avis de 420eceba...",
+      "date": "2026-06-24T07:47:37.298Z",
+      "isRead": true,
+      "reviewId": "2026-06-24T07:47:37.261Z"
+    },
+    {
+      "id": "9573945d-5c0c-496e-9e68-368503555f2f",
+      "type": "new_review",
+      "userId": "2bcba605-m29tgmhe",
+      "message": "Nouvel avis de 2bcba605...",
+      "date": "2026-06-24T16:18:59.032Z",
+      "isRead": true,
+      "reviewId": "2026-06-24T16:18:59.001Z"
+    },
+    {
+      "id": "13f6ec1c-7e7d-43f4-80f2-d84ea7ee43c8",
+      "type": "new_review",
+      "userId": "14987b5d-pnbjt7v1",
+      "message": "Nouvel avis de 14987b5d...",
+      "date": "2026-06-25T13:17:44.113Z",
+      "isRead": true,
+      "reviewId": "2026-06-25T13:17:44.108Z"
+    },
+    {
+      "id": "2a10d798-a755-43da-a1ed-e5bf8e719311",
+      "type": "new_review",
+      "userId": "3294de2a-m3zfax6e",
+      "message": "Nouvel avis de 3294de2a...",
+      "date": "2026-07-09T06:37:46.312Z",
+      "isRead": true,
+      "reviewId": "2026-07-09T06:37:46.307Z"
+    }
+  ],
+  "adminReplies": [
+    {
+      "id": "792e157c-3a8f-4078-85b6-d78b8e605a1b",
+      "userId": "511fe3a5-q5q3h66p",
+      "reply": "C'est noté, merci !",
+      "date": "2026-06-24T05:00:32.779Z",
+      "isRead": true
+    },
+    {
+      "id": "306b9b0c-faf4-440d-8081-e435544bb1bc",
+      "userId": "420eceba-xok8czbl",
+      "reply": "Je vois, nous nous chargerons de cela. Merci 👌",
+      "date": "2026-06-24T12:59:14.119Z",
+      "isRead": false
+    },
+    {
+      "id": "7d9a54fc-a477-43b8-85ef-2db7251c090b",
+      "userId": "2bcba605-m29tgmhe",
+      "reply": "😥 Désolé, nous allons prendre en considération cela, merci une fois de plus !",
+      "date": "2026-06-24T16:21:43.162Z",
+      "isRead": true
+    },
+    {
+      "id": "e414fcae-bb65-4768-9c06-e3fe5fc6cdd0",
+      "userId": "14987b5d-pnbjt7v1",
+      "reply": "Merci pour votre soutien 😁",
+      "date": "2026-06-25T13:19:30.269Z",
+      "isRead": true
+    },
+    {
+      "id": "f6bf7f99-92f9-461f-9b59-1f0682263c2b",
+      "userId": "3294de2a-m3zfax6e",
+      "reply": "Ok on verra cela",
+      "date": "2026-07-25T08:20:13.065Z",
+      "isRead": false
+    }
+  ]
+}
